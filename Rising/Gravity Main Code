@@ -1,0 +1,65 @@
+Rising Main
+f = 0.025;
+% All units are in SI
+z2=1579; %h= Height at storage location
+z3=1544; % Height at top of borehole
+x=50; % Borehole depth
+z1=z3-x; % Elevation of water level
+b=z2-z3; % Non-borehole pipe length
+c=261; % Horizontal distance between storage and source
+a=sqrt(b^2+c^2); % Length of above ground pipe
+l=a+x; % Rising main length
+d=0.0381; % Pipe diameter (2 in)
+g=9.8; % Gravitational constant
+Q=0.0058; % Volumetric Flow Rate [m^3/s]
+m=0.58; % Mass Flow Rate [kg/s]
+v=Q/(0.25*pi*(d^2));
+W=(m*g*(z2-z1)+(m*(v^2)/2)*(1.05*f*l/d))*0.00134 % Pump power [Horsepower]
+
+
+Gravity Main
+f = 0.025;
+% All units are in SI
+z2=1579; %h= Height at storage location
+z3=1544; % Height at top of borehole
+x=50; % Borehole depth
+z1=z3-x; % Elevation of water level
+b=z2-z3; % Non-borehole pipe length
+c=261; % Horizontal distance between storage and source
+a=sqrt(b^2+c^2); % Length of above ground pipe
+l=a+x; % Rising main length
+d=0.0381; % Pipe diameter (2 in)
+g=9.8; % Gravitational constant
+Q=0.0003; % Volumetric Flow Rate [m^3/s]
+m=0.58; % Mass Flow Rate [kg/s]
+
+%syms d
+% D= vpasolve(sqrt((2*g*(z1-z2))/((1.05*f*l/d)+kv))==Q/(0.25*pi*(d^2)),d);
+
+z=[0.0003, 0.0023, 0.002, 0.0016, 0.0013, 0.001, 0.0006, 0.0003]; % Vector of pipe volumetric flows
+d_pipe=zeros(1,8);
+for x=1:7
+    d_pipe(x)=sqrt((z(x)*4)/(0.5*pi)); % Vector of pipe diamter initial guesses
+end
+
+% Pipe Pressure Drops
+DP_elev=[1535, 1577, 1545, 1511, 1502, 1485, 1423, 1384];
+Pipe_Pressure=zeros(1,8);
+for b=1:8
+    if b<=6
+    Pipe_Presure(b)=1000*9.8*(1581-DP_elev(b))/101300; % Calculating the rho*g*h value for each section of pipe
+    end
+    if b>6
+        Pipe_Presure(b)=1000*9.8*(1475-DP_elev(b))/101300; % Calculating the rho*g*h value for each section of pipe
+    end
+end
+
+
+
+% Energy and Mass Balances - 7 DPs
+% Patm=...
+% P1 P2 P3 P4 P5 P6 P7
+
+% EB1_inlet=0=()
+
+
